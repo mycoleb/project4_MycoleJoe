@@ -1,4 +1,7 @@
-//ProfileManager.java
+package SocialMediaPackage;
+
+import GraphPackage.UndirectedGraph;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -20,7 +23,7 @@ public class ProfileManager {
     public void removeProfile(String profileName) {
         if (profiles.containsKey(profileName)) {
             Profile profile = profiles.get(profileName);
-            network.removeVertex(profile);
+            //network.removeVertex(profile);            // removeVertex needs implemented
             profiles.remove(profileName);
         }
     }
@@ -55,7 +58,7 @@ public class ProfileManager {
         if (profiles.containsKey(profileName)) {
             Profile profile = profiles.get(profileName);
             System.out.println("Friends of friends of " + profileName + ":");
-            Set<Profile> friendsOfFriends = network.getNeighbors(profile);
+            Set<Profile> friendsOfFriends = null; // network.getNeighbors(profile);  // getNeighbors needs implemented
             for (Profile fof : friendsOfFriends) {
                 if (!profile.getFriends().contains(fof)) {
                     System.out.println(fof.getName());
