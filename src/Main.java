@@ -51,7 +51,7 @@ public class Main {
         System.out.println("Adding edge from Moscow (not in graph) to Tokyo; result: " +
                 testDG.addEdge("Moscow", "Tokyo"));
         System.out.println("Adding edge from Mumbai to Shanghai (not in graph); result: " +
-                testDG.addEdge("Mumbai", "Shanhghai"));
+                testDG.addEdge("Mumbai", "Shanghai"));
 
         System.out.println("\nCurrent state of the graph:");
         testDG.printVertices();
@@ -70,7 +70,7 @@ public class Main {
         System.out.println("\nDoes Seattle have an edge pointing to Moscow (not in graph)? " +
                 testDG.hasEdge("Seattle", "Moscow"));
         System.out.println("Does Shanghai (not in graph) have an edge pointing to Tokyo? " +
-                testDG.hasEdge("Shangai", "Tokyo"));
+                testDG.hasEdge("Shanghai", "Tokyo"));
         System.out.println("Does Barcelona have an edge pointing to Barcelona (cyclic)? " +
                 testDG.hasEdge("Barcelona", "Barcelona"));
 

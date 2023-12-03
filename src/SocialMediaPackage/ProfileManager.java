@@ -1,13 +1,12 @@
 package SocialMediaPackage;
-
 import GraphPackage.UndirectedGraph;
 
 import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.ArrayList;
+
 public class ProfileManager {
-    private Map<String, Profile> profiles;
-    private UndirectedGraph<Profile> network;
+    private final HashMap<String, Profile> profiles;
+    private final UndirectedGraph<Profile> network;
     public ProfileManager() {
         profiles = new HashMap<>();
         network = new UndirectedGraph<>();
@@ -23,7 +22,7 @@ public class ProfileManager {
     public void removeProfile(String profileName) {
         if (profiles.containsKey(profileName)) {
             Profile profile = profiles.get(profileName);
-            //network.removeVertex(profile);            // removeVertex needs implemented
+            network.removeVertex(profile);
             profiles.remove(profileName);
         }
     }
@@ -39,18 +38,16 @@ public class ProfileManager {
     }
     // Method to display all profiles
     public void displayAllProfiles() {
-        for (Profile profile : profiles.values()) {
+        for (Profile profile : profiles.values())
             profile.printProfileDetails();
-        }
     }
     // Method to display a profile's friends
     public void displayFriends(String profileName) {
         if (profiles.containsKey(profileName)) {
             Profile profile = profiles.get(profileName);
             System.out.println("Friends of " + profileName + ":");
-            for (Profile friend : profile.getFriends()) {
+            for (Profile friend : profile.getFriends())
                 System.out.println(friend.getName());
-            }
         }
     }
     // Method to display friends of friends
@@ -58,11 +55,10 @@ public class ProfileManager {
         if (profiles.containsKey(profileName)) {
             Profile profile = profiles.get(profileName);
             System.out.println("Friends of friends of " + profileName + ":");
-            Set<Profile> friendsOfFriends = null; // network.getNeighbors(profile);  // getNeighbors needs implemented
+            ArrayList<Profile> friendsOfFriends = network.getNeighbors(profile);
             for (Profile fof : friendsOfFriends) {
-                if (!profile.getFriends().contains(fof)) {
+                if (!profile.getFriends().contains(fof))
                     System.out.println(fof.getName());
-                }
             }
         }
     }
