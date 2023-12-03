@@ -1,6 +1,7 @@
 package GraphPackage;
 
 import java.util.Iterator;
+import java.util.ArrayList;
 
 public interface VertexInterface<T>
 {
@@ -35,6 +36,8 @@ public interface VertexInterface<T>
      @return  True if the edge is added, or false if not. */
     public boolean connect(VertexInterface<T> endVertex);
 
+    public boolean disconnect(VertexInterface<T> endVertex);
+
     /** Creates an iterator of this vertex's neighbors by following
      all edges that begin at this vertex.
      @return  An iterator of the neighboring vertices of this vertex. */
@@ -49,6 +52,8 @@ public interface VertexInterface<T>
     /** Sees whether this vertex has at least one neighbor.
      @return  True if the vertex has a neighbor. */
     public boolean hasNeighbor();
+
+    public ArrayList<T> getNeighborLabels();
 
     /** Gets an unvisited neighbor, if any, of this vertex.
      @return  Either a vertex that is an unvisited neighbor or null

@@ -12,7 +12,7 @@ import java.util.ArrayList;
 public class Vertex<T> implements VertexInterface<T> { // Make private after testing
     /** The label object to store in this vertex. */
     private final T label;
-    /** A list of Edge objects that point to other vertexes. */
+    /** A list of Edge objects that point to other vertices. */
     private final ArrayList<Edge> edgeList;
     /** Stores the visited status of this vertex for graph traversal.  */
     private boolean visited;
@@ -131,10 +131,10 @@ public class Vertex<T> implements VertexInterface<T> { // Make private after tes
     }
 
     /**
-     * Retrieves a list of all the label objects of all vertexes that this vertex has an edge pointing to.
-     * @return A list of the label objects of all neighboring vertexes.
+     * Retrieves a list of all the label objects of all vertices that this vertex has an edge pointing to.
+     * @return A list of the label objects of all neighboring vertices.
      */
-    public ArrayList<T> getNeighbors() {
+    public ArrayList<T> getNeighborLabels() {
         if (!this.hasNeighbor())
             return null;
 
@@ -156,11 +156,11 @@ public class Vertex<T> implements VertexInterface<T> { // Make private after tes
         if (!this.hasNeighbor())
             return false;
 
-        return this.getNeighbors().contains(searchLabel);
+        return this.getNeighborLabels().contains(searchLabel);
     }
 
     /**
-     * Indicates whether this vertex has any edges pointing to other vertexes.
+     * Indicates whether this vertex has any edges pointing to other vertices.
      * @return True if this vertex has any neighbors, or false if it does not.
      */
     public boolean hasNeighbor() { return !edgeList.isEmpty(); }
@@ -204,31 +204,31 @@ public class Vertex<T> implements VertexInterface<T> { // Make private after tes
         StringJoiner vertexString = new StringJoiner(", ");
 
         System.out.print("Vertex: " + label + " - Edges: " );
-        Iterator<VertexInterface<T>> i = getNeighborIterator();
+        Iterator<VertexInterface<T>> vertexIter = getNeighborIterator();
         Iterator<Double> weightIter = getWeightIterator();
+        if (!vertexIter.hasNext())
+            vertexString.add("None; terminal");
 
-        while (i.hasNext()) {
-            Vertex<T> vertexIter = (Vertex<T>)i.next();
-            vertexString.add(vertexIter + " W: " + weightIter.next());
-        }
+        while (vertexIter.hasNext())
+            vertexString.add(vertexIter.next().getLabel() + " - W: " + weightIter.next());
 
         System.out.println(vertexString);
     }
 
     /**
-     * Creates a new iterator that iterates through all vertexes that neighbor this one.
+     * Creates a new iterator that iterates through all vertices that neighbor this one.
      * @return An iterator object, ready for use.
      */
     public Iterator<VertexInterface<T>> getNeighborIterator() { return new NeighborIterator(); }
 
     /**
-     * Creates a new iterator that iterates through the edge weights of all vertexes that neighbor this one.
+     * Creates a new iterator that iterates through the edge weights of all vertices that neighbor this one.
      * @return An iterator object, ready for use.
      */
     public Iterator<Double> getWeightIterator() { return new WeightIterator(); }
 
     /**
-     * NeighborIterator: An implementation of an iterator that iterates through all vertexes that neighbor this one.
+     * NeighborIterator: An implementation of an iterator that iterates through all vertices that neighbor this one.
      */
     private class NeighborIterator implements Iterator<VertexInterface<T>> {
         /** An iterator to traverse the list of edges. */
@@ -240,8 +240,8 @@ public class Vertex<T> implements VertexInterface<T> { // Make private after tes
         private NeighborIterator() { edges = edgeList.iterator(); }
 
         /**
-         * Indicates whether there are more neighboring vertexes to iterate to.
-         * @return True if there are more neighboring vertexes to iterate to, false if not.
+         * Indicates whether there are more neighboring vertices to iterate to.
+         * @return True if there are more neighboring vertices to iterate to, false if not.
          */
         public boolean hasNext() { return edges.hasNext(); }
 

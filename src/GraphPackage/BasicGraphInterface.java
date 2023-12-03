@@ -29,11 +29,15 @@ public interface BasicGraphInterface<T>
      @return  True if the edge is added, or false if not. */
     public boolean addEdge(T begin, T end);
 
+    public boolean removeEdge(T begin, T end);
+
     /** Sees whether an edge exists between two given vertices.
      @param begin  An object that labels the origin vertex of the edge.
      @param end    An object that labels the end vertex of the edge.
      @return  True if an edge exists. */
     public boolean hasEdge(T begin, T end);
+
+
 
     /** Sees whether this graph is empty.
      @return  True if the graph is empty. */
@@ -49,4 +53,4 @@ public interface BasicGraphInterface<T>
 
     /** Removes all vertices and edges from this graph resulting in an empty graph. */
     public void clear();
-} // end GraphPackage.BasicGraphInterface
+}
