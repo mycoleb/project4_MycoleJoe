@@ -9,7 +9,7 @@ import java.util.ArrayList;
  * Vertex: An implementation of a generic graph vertex that stores a label object of the specified type.
  * @param <T> The data type of the label object.
  */
-public class Vertex<T> implements VertexInterface<T> { // Make private after testing
+class Vertex<T> implements VertexInterface<T> {
     /** The label object to store in this vertex. */
     private final T label;
     /** A list of Edge objects that point to other vertices. */
