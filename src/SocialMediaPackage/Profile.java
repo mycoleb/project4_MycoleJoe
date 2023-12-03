@@ -3,16 +3,23 @@ package SocialMediaPackage;
 import java.util.ArrayList;
 
 public class Profile {
+    enum statusTypes {
+        ONLINE,
+        OFFLINE
+    }
+
     private String name;
     private String image; // URL or path to the image; optional
-    private String status;
+    private statusTypes status;
     private final ArrayList<Profile> friendProfiles;
 
+
+
     // Additional attributes like location, age, etc., can be added here
-    public Profile(String name, String image, String status) {
+    public Profile(String name, String image) {
         this.name = name;
         this.image = image;
-        this.status = status;
+        this.status = statusTypes.OFFLINE;
         this.friendProfiles = new ArrayList<>();
     }
 
@@ -27,9 +34,9 @@ public class Profile {
     public void setImage(String image) { this.image = image; }
 
     // Getter and setter for status
-    public String getStatus() { return status; }
+    public statusTypes getStatus() { return status; }
 
-    public void setStatus(String status) { this.status = status; }
+    public void setStatus(statusTypes status) { this.status = status; }
 
     // Method to add a friend
     public void addFriend(Profile friendProfile) {
@@ -53,6 +60,10 @@ public class Profile {
         System.out.println("Friends:");
         for (Profile friend : friendProfiles)
             System.out.println(friend.getName());
+    }
+
+    public String toString() {
+        return this.name;
     }
 }
 

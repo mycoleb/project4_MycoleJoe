@@ -3,21 +3,19 @@ package MenuPackage;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-
 public class TextMenu {
     private String appName;
     private String menuName;
+    private String prompt;
     private final ArrayList<String> itemLabels;
     private final ArrayList<Runnable> itemFunctions;
     private int numEntries;
 
-    public TextMenu() {
-        this("Application", "Main Menu");
-    }
 
-    public TextMenu(String newAppName, String newMenuName) {
+    public TextMenu(String newAppName, String newMenuName, String newPrompt) {
         setAppName(newAppName);
         setMenuName(newMenuName);
+        setPrompt(newPrompt);
         itemLabels = new ArrayList<>();
         itemFunctions = new ArrayList<>();
         numEntries = 0;
@@ -31,6 +29,11 @@ public class TextMenu {
     public void setMenuName(String newMenuName) {
         if (newMenuName != null)
             menuName = newMenuName;
+    }
+
+    public void setPrompt(String newPrompt) {
+        if (newPrompt != null)
+            prompt = newPrompt;
     }
 
     public boolean addMenuEntry(String label, Runnable function) {
@@ -64,7 +67,6 @@ public class TextMenu {
         String separator = "-".repeat(header.length());
         Scanner inputScanner = new Scanner(System.in);
         boolean choiceMade = false;
-        boolean exiting = false;
         String entry;
         int choice = 0;
         boolean validInput = true;
@@ -73,14 +75,15 @@ public class TextMenu {
             System.out.println("\n" + header);
             System.out.println(separator);
 
-            for (int index = 1; index <= numEntries; index++)
-                System.out.println(index + ": " + itemLabels.get(index - 1));
+            for (int index = 0; index < numEntries; index++)
+                System.out.println((index + 1) + ": " + itemLabels.get(index));
 
             System.out.print("\n");
             if (!validInput)
                 System.out.println("Previous input invalid.");
 
-            System.out.print("Please enter a number from 1 to " + numEntries + ": ");
+            System.out.println(prompt);
+            System.out.print("Enter a number from 1 to " + numEntries + ": ");
             entry = inputScanner.next();
 
             try {
@@ -95,7 +98,7 @@ public class TextMenu {
                 validInput = false;
         }
 
-        Runnable function = itemFunctions.get(choice);
+        Runnable function = itemFunctions.get(choice - 1);
         if (function != null)
             function.run();
         return choice;
