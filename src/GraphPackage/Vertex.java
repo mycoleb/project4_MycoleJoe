@@ -134,15 +134,18 @@ class Vertex<T> implements VertexInterface<T> {
      * Retrieves a list of all the label objects of all vertices that this vertex has an edge pointing to.
      * @return A list of the label objects of all neighboring vertices.
      */
-    public ArrayList<T> getNeighborLabels() {
+    public ArrayList<T> getNeighborLabels(double minWeight) {
         if (!this.hasNeighbor())
             return null;
 
-        Iterator<VertexInterface<T>> neighborIter = getNeighborIterator();
+        Iterator<Edge> neighborIter = edgeList.iterator();
         ArrayList<T> returnList = new ArrayList<>();
 
-        while (neighborIter.hasNext())
-            returnList.add(neighborIter.next().getLabel());
+        while (neighborIter.hasNext()) {
+            Edge curEdge = neighborIter.next();
+            if (curEdge.getWeight() >= minWeight)
+                returnList.add(curEdge.getEndVertex().getLabel());
+        }
 
         return returnList;
     }
@@ -156,7 +159,7 @@ class Vertex<T> implements VertexInterface<T> {
         if (!this.hasNeighbor())
             return false;
 
-        return this.getNeighborLabels().contains(searchLabel);
+        return this.getNeighborLabels(Double.MIN_VALUE).contains(searchLabel);
     }
 
     /**

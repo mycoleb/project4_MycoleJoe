@@ -1,4 +1,3 @@
-
 import GraphPackage.DirectedGraph;
 import SocialMediaPackage.SocialMedia;
 
@@ -11,7 +10,6 @@ public class Main {
         SocialMedia testSM = new SocialMedia();
         testSM.start();
         //testGraph();
-
     }
 
     public static void testGraph() {
@@ -110,10 +108,11 @@ public class Main {
 
         System.out.println("\nTesting neighbor retrieval:");
         System.out.print("Neighbors of Paris: ");
-        ArrayList<String> parisNeighbors = testDG.getNeighbors("Paris");
+        ArrayList<String> parisNeighbors = testDG.getNeighbors("Paris", 0);
         for (String neighbor : parisNeighbors)
             System.out.print(neighbor + " ");
         System.out.print("\n");
+        System.out.println("Neighbors of Lima (none): " + testDG.getNeighbors("Lima", 0));
 
         System.out.println("\nTesting edge/vertex removal:");
         System.out.println("Removing edge from Mumbai to Lima; result: " + testDG.removeEdge("Mumbai", "Lima"));

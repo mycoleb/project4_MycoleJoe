@@ -37,8 +37,6 @@ public interface BasicGraphInterface<T>
      @return  True if an edge exists. */
     public boolean hasEdge(T begin, T end);
 
-
-
     /** Sees whether this graph is empty.
      @return  True if the graph is empty. */
     public boolean isEmpty();

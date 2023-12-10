@@ -53,7 +53,7 @@ public interface VertexInterface<T>
      @return  True if the vertex has a neighbor. */
     public boolean hasNeighbor();
 
-    public ArrayList<T> getNeighborLabels();
+    public ArrayList<T> getNeighborLabels(double minWeight);
 
     /** Gets an unvisited neighbor, if any, of this vertex.
      @return  Either a vertex that is an unvisited neighbor or null

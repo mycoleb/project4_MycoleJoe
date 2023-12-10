@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 public class DirectedGraph<T> implements GraphInterface<T>
 {
-    private HashMap<T, VertexInterface<T>> vertices;
+    private final HashMap<T, VertexInterface<T>> vertices;
     private int edgeCount;
 
     public DirectedGraph() {
@@ -74,7 +74,7 @@ public class DirectedGraph<T> implements GraphInterface<T>
         if (containsLabels(begin, end)) {
             VertexInterface<T> beginVertex = vertices.get(begin);
             VertexInterface<T> endVertex = vertices.get(end);
-            ArrayList<T> neighborLabels = beginVertex.getNeighborLabels();
+            ArrayList<T> neighborLabels = beginVertex.getNeighborLabels(Double.MIN_VALUE);
             return neighborLabels.contains(endVertex.getLabel());
         }
         return false;
@@ -93,10 +93,10 @@ public class DirectedGraph<T> implements GraphInterface<T>
         edgeCount = 0;
     }
 
-    public ArrayList<T> getNeighbors(T vertexLabel) {
+    public ArrayList<T> getNeighbors(T vertexLabel, double weightMin) {
         if (vertices.containsKey(vertexLabel)) {
             VertexInterface<T> vertexOfLabel = vertices.get(vertexLabel);
-            return vertexOfLabel.getNeighborLabels();
+            return vertexOfLabel.getNeighborLabels(weightMin);
         }
         return null;
     }

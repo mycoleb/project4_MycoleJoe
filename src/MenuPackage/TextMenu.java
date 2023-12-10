@@ -103,4 +103,7 @@ public class TextMenu {
             function.run();
         return choice;
     }
+
+    public static void noOp() {}
+
 }
