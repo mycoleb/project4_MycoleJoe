@@ -180,7 +180,7 @@ public class SocialMedia {
     private void addBestFriendProfile() {
         ArrayList<String> userList = profileMgr.getAllUsernames();
         userList.remove(activeUser);
-        for (String friend : profileMgr.getFriendUsernames(activeUser,true))
+        for (String friend : profileMgr.getFriendUsernames(activeUser,false))
             userList.remove(friend);
 
         if (userList.isEmpty())

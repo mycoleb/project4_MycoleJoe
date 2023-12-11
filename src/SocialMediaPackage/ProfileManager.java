@@ -30,7 +30,9 @@ public class ProfileManager {
      * @param newProfile The profile object that corresponds to the new user.
      */
     public void addProfile(String username, Profile newProfile) {
-        if (!profiles.containsKey(newProfile.getName())) {
+        if (username == null || newProfile == null)
+            return;
+        if (!containsProfile(username)) {
             profiles.put(username, newProfile);
             network.addVertex(newProfile);
         }
@@ -120,15 +122,17 @@ public class ProfileManager {
      * @param best True to create a best friendship, or false to create a normal friendship.
      */
     public void createFriendship(String username1, String username2, boolean best) {
-        if (profiles.containsKey(username1) && profiles.containsKey(username2)) {
+        if (profiles.containsKey(username1) && profiles.containsKey(username2) && !username1.equals(username2)) {
             Profile profile1 = profiles.get(username1);
             Profile profile2 = profiles.get(username2);
-            if (best)
-                network.addEdge(profile1, profile2,1);
-            else
-                network.addEdge(profile1, profile2,0);
-            profile1.addFriend(profile2);
-            profile2.addFriend(profile1);
+            if (!profile1.getFriends().contains(profile2)) {
+                if (best)
+                    network.addEdge(profile1, profile2, 1);
+                else
+                    network.addEdge(profile1, profile2, 0);
+                profile1.addFriend(profile2);
+                profile2.addFriend(profile1);
+            }
         }
     }
 
