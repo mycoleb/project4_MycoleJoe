@@ -3,8 +3,7 @@ package GraphPackage;
 import java.util.Queue;
 import java.util.Stack;
 
-public interface GraphAlgorithmsInterface<T>
-{
+public interface GraphAlgorithmsInterface<T> {
     /** Performs a breadth-first traversal of this graph.
      @param origin  An object that labels the origin vertex of the traversal.
      @return  A queue of labels of the vertices in the traversal, with
@@ -43,4 +42,4 @@ public interface GraphAlgorithmsInterface<T>
      the label of the destination vertex is at the bottom
      @return  The cost of the cheapest path. */
     public double getCheapestPath(T begin, T end, Stack<T> path);
-} // end GraphAlgorithmsInterface
+}

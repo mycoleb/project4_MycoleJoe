@@ -3,8 +3,7 @@ package GraphPackage;
 import java.util.Iterator;
 import java.util.ArrayList;
 
-public interface VertexInterface<T>
-{
+public interface VertexInterface<T> {
     /** Gets this vertex's label.
      @return  The object that labels the vertex. */
     public T getLabel();
@@ -36,6 +35,12 @@ public interface VertexInterface<T>
      @return  True if the edge is added, or false if not. */
     public boolean connect(VertexInterface<T> endVertex);
 
+    /**
+     * Removes an existing edge from this vertex to the specified end vertex.
+     * @param endVertex A vertex in the graph that ends the edge.
+     * @return True if there was an edge removed, or false if there is no edge connecting this vertex to the
+     * specified end vertex.
+     */
     public boolean disconnect(VertexInterface<T> endVertex);
 
     /** Creates an iterator of this vertex's neighbors by following
@@ -53,6 +58,13 @@ public interface VertexInterface<T>
      @return  True if the vertex has a neighbor. */
     public boolean hasNeighbor();
 
+    /**
+     * Retrieves a list of label objects containing the labels of any neighbors of this vertex connected
+     * by an edge greater than or equal to the specified edge weight.
+     * @param minWeight The minimum weight of the edge connection between this vertex and it's neighbors.
+     * @return A list of any vertex label objects which this vertex has an edge pointing to, where that edge's
+     * weight is greater than or equal to the weight minimum.
+     */
     public ArrayList<T> getNeighborLabels(double minWeight);
 
     /** Gets an unvisited neighbor, if any, of this vertex.
@@ -80,4 +92,4 @@ public interface VertexInterface<T>
     /** Gets the recorded cost of the path to this vertex.
      @return  The cost of the path. */
     public double getCost();
-} // end VertexInterface
+}

@@ -6,16 +6,27 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Scanner;
 
+/**
+ * Implementation of the interactive portion of a social media network, including the user interface, login system
+ * and support methods.
+ */
 public class SocialMedia {
-    private static final String networkName = "Social Media Network";
+    /** The name of the social media network. */
+    private static final String NETWORK_NAME = "Social Media Network";
+    /** Stores the username of the currently logged-in user. */
     private String activeUser;
+    /** The profile manager used to perform non-interactive functions involving user profiles. */
     private final ProfileManager profileMgr;
+    /** The text based main menu that allows users to interact with the social media network. */
     private final TextMenu mainMenu;
 
+    /**
+     * Constructor creates a new SocialMedia object and builds the main menu.
+     */
     public SocialMedia() {
         activeUser = null;
         profileMgr = new ProfileManager();
-        mainMenu = new TextMenu(networkName, "Main Menu", "Please choose a function.");
+        mainMenu = new TextMenu(NETWORK_NAME, "Main Menu", "Please choose a function.");
         mainMenu.addMenuEntry("Add new user/profile", this::addNewProfile);
         mainMenu.addMenuEntry("Delete a user/profile", this::deleteProfile);
         mainMenu.addMenuEntry("Modify my profile", this::modifyProfile);
@@ -24,19 +35,20 @@ public class SocialMedia {
         mainMenu.addMenuEntry("Add profile as best friend", this::addBestFriendProfile);
         mainMenu.addMenuEntry("Remove profile as friend", this::removeFriendProfile);
         mainMenu.addMenuEntry("View my profile information", this::displayCurrentProfile);
-        mainMenu.addMenuEntry("Look up profile information", this::lookUpProfileInfo);
-        mainMenu.addMenuEntry("View friend profile information", this::lookupFriendProfile);
-        mainMenu.addMenuEntry("View best friend profile information", this::lookupBestFriendProfile);
-        mainMenu.addMenuEntry("View friends of friends profile information", this::viewFriendsOfFriends);
+        mainMenu.addMenuEntry("Look up complete profile list and information", this::lookUpProfileInfo);
+        mainMenu.addMenuEntry("View friend list and profile information", this::lookupFriendProfile);
+        mainMenu.addMenuEntry("View best friend list and profile information", this::lookupBestFriendProfile);
+        mainMenu.addMenuEntry("View friends of friends and profile information", this::viewFriendsOfFriends);
         mainMenu.addMenuEntry("View all connected profiles", this::viewAllConnectedProfiles);
         mainMenu.addMenuEntry("View all profiles on the network", this::viewAllProfiles);
         mainMenu.addMenuEntry("Log out and change user", this::logout);
         mainMenu.addMenuEntry("Exit", this::logout);
-
-        addExampleProfiles(); // For testing
     }
 
-    private void addExampleProfiles() {
+    /**
+     * Adds example users, their profiles, and example friendships to the network for testing purposes.
+     */
+    public void addExampleProfiles() {
         // Add example users
         profileMgr.addProfile("Joe", new Profile("Spencer", "spencer.jpg"));
         profileMgr.addProfile("Bob", new Profile("Robert", "robert.jpg"));
@@ -47,23 +59,27 @@ public class SocialMedia {
         // Add example friendships
         profileMgr.createFriendship("Joe", "Alex",true);
         profileMgr.createFriendship("Joe", "Bill",false);
-        profileMgr.createFriendship("Jimmy", "Art",false);
+        profileMgr.createFriendship("Jimmy", "Art",true);
         profileMgr.createFriendship("Art", "Bob",true);
         profileMgr.createFriendship("Bob", "Jimmy",false);
-        profileMgr.createFriendship("Jimmy", "Bob",false);
+        profileMgr.createFriendship("Jimmy", "Bob",true);
         profileMgr.createFriendship("Bill", "Bob",false);
         profileMgr.createFriendship("Alex", "Jimmy",false);
         profileMgr.createFriendship("Alex", "Art",false);
     }
 
+    /**
+     * Adds a new user and profile to the social media network based on the current user's text input if the new user
+     * is not already a member.
+     */
     private void addNewProfile() {
         Scanner input = new Scanner(System.in);
         System.out.println("\nCreating new user/profile...");
-        System.out.print("Enter your user name (not the same as display name): ");
+        System.out.print("Enter new user's user name (not the same as display name): ");
         String username = input.next();
-        System.out.print("Enter your display name (not the same as user name): ");
+        System.out.print("Enter new user's display name (not the same as user name): ");
         String displayName = input.next();
-        System.out.print("Enter the URL for your image: ");
+        System.out.print("Enter the URL or path for this user's profile image: ");
         String image = input.next();
 
         if (!profileMgr.containsProfile(username)) {
@@ -75,6 +91,10 @@ public class SocialMedia {
         }
     }
 
+    /**
+     * Removes a user and their profile from the social media network based on the current user's menu selection of
+     * available profiles. Note that this will not allow the current user to remove their own profile.
+     */
     private void deleteProfile() {
         ArrayList<String> userList = profileMgr.getAllUsernames();
         userList.remove(activeUser);
@@ -90,6 +110,9 @@ public class SocialMedia {
         }
     }
 
+    /**
+     * Modifies the current user's profile information based on the current user's text input.
+     */
     private void modifyProfile() {
         Scanner input = new Scanner(System.in);
         Profile curProfile = profileMgr.getProfile(activeUser);
@@ -103,8 +126,16 @@ public class SocialMedia {
         curProfile.setImage(image);
     }
 
+    /**
+     * Displays profile information for the current user.
+     */
     private void displayCurrentProfile() { displayProfileInfo(activeUser); }
 
+    /**
+     * Displays a list of all profiles, and profile information for a user based on the current user's menu
+     * selection of available profiles. Note that this will not allow the current user to view their own profile
+     * information, which can be accessed via the menu option that executes displayCurrentProfile()
+     */
     private void lookUpProfileInfo() {
         ArrayList<String> userList = profileMgr.getAllUsernames();
         userList.remove(activeUser);
@@ -119,6 +150,10 @@ public class SocialMedia {
         }
     }
 
+    /**
+     * Adds a new friendship for the current user based on their menu selection of available profiles. Note that this
+     * will not allow a user to add themselves or their existing friends as a new friend.
+     */
     private void addFriendProfile() {
         ArrayList<String> userList = profileMgr.getAllUsernames();
         userList.remove(activeUser);
@@ -130,7 +165,7 @@ public class SocialMedia {
         else {
             String selectedUser = displayProfileMenu("Please choose a profile to add as a friend.", userList);
             if (selectedUser != null) {
-                addFriend(selectedUser, false);
+                profileMgr.createFriendship(activeUser, selectedUser, false);
                 System.out.println("\nAdded " + profileMgr.getProfile(selectedUser).getName() + " as a friend.");
             }
             else
@@ -138,6 +173,10 @@ public class SocialMedia {
         }
     }
 
+    /**
+     * Adds a new best friendship for the current user based on their menu selection of available profiles. Note
+     * that this will not allow a user to add themselves or their existing best friends as a new best friend.
+     */
     private void addBestFriendProfile() {
         ArrayList<String> userList = profileMgr.getAllUsernames();
         userList.remove(activeUser);
@@ -149,7 +188,7 @@ public class SocialMedia {
         else {
             String selectedUser = displayProfileMenu("Please choose a profile to add as a best friend.", userList);
             if (selectedUser != null) {
-                addFriend(selectedUser, true);
+                profileMgr.createFriendship(activeUser, selectedUser, true);
                 System.out.println("\nAdded " + profileMgr.getProfile(selectedUser).getName() + " as a best friend.");
             }
             else
@@ -157,6 +196,10 @@ public class SocialMedia {
         }
     }
 
+    /**
+     * Removes an existing friendship from the current user's friends based on their menu selection of friend
+     * profiles.
+     */
     private void removeFriendProfile() {
         ArrayList<String> userList = profileMgr.getFriendUsernames(activeUser, false);
         if (userList.isEmpty())
@@ -165,13 +208,17 @@ public class SocialMedia {
             String selectedUser = displayProfileMenu("Please choose a profile to remove as a friend.", userList);
             if (selectedUser != null) {
                 profileMgr.removeFriendship(activeUser, selectedUser);
-                System.out.println("Friendship with " + profileMgr.getProfile(selectedUser).getName() + " removed.");
+                System.out.println("\nFriendship with " + profileMgr.getProfile(selectedUser).getName() + " removed.");
             }
             else
                 System.out.println("\nFriend profile removal cancelled.");
         }
     }
 
+    /**
+     * Displays a list of all friend profiles, and profile information for a user based on the current user's
+     * menu selection of existing friends.
+     */
     private void lookupFriendProfile() {
         ArrayList<String> userList = profileMgr.getFriendUsernames(activeUser, false);
         if (userList.isEmpty())
@@ -185,6 +232,10 @@ public class SocialMedia {
         }
     }
 
+    /**
+     * Displays a list of all best friend profiles, and profile information for a user based on the current user's
+     * menu selection of existing best friends.
+     */
     private void lookupBestFriendProfile() {
         ArrayList<String> userList = profileMgr.getFriendUsernames(activeUser, true);
         if (userList.isEmpty())
@@ -198,6 +249,11 @@ public class SocialMedia {
         }
     }
 
+    /**
+     * Displays a list of all friends of friends, and profile information for a user based on the current user's
+     * menu selection of friends of friends. Note that this will not allow the user to view their own profile
+     * information or that of directly connected friends.
+     */
     private void viewFriendsOfFriends() {
         ArrayList<String> userList = profileMgr.getFriendsOfFriendsUsernames(activeUser);
         if (userList.isEmpty())
@@ -211,20 +267,32 @@ public class SocialMedia {
         }
     }
 
+    /**
+     * Displays the profiles of all users that can be reached through a breadth-first traversal of the network graph,
+     * starting at the current user. This will show all profiles ultimately connected to the current user by a
+     * chain of friendships.
+     */
     private void viewAllConnectedProfiles() {
         System.out.println("\nAll profiles connected to " + profileMgr.getProfile(activeUser).getName() + ":");
         profileMgr.displayAllConnectedProfiles(activeUser);
         pause();
     }
 
+    /**
+     * Displays the profiles of all users on the social media network.
+     */
     private void viewAllProfiles() {
-        System.out.println("\nAll " + profileMgr.getNumProfiles() + " profiles available on " + networkName + ":");
+        System.out.println("\nAll " + profileMgr.getNumProfiles() + " profiles available on " + NETWORK_NAME + ":");
         profileMgr.displayAllProfiles();
         pause();
     }
 
+    /**
+     * Allows the current user to select their availability status based on their menu selection of availability
+     * statuses.
+     */
     private void selectStatus() {
-        TextMenu statusMenu = new TextMenu(networkName, ("Online Status Selection - Current status: " +
+        TextMenu statusMenu = new TextMenu(NETWORK_NAME, ("Online Status Selection - Current status: " +
                 profileMgr.getProfile(activeUser).getStatus()), "Please choose your online status.");
         for (Profile.statusTypes status : Profile.statusTypes.values())
             statusMenu.addMenuEntry(status.toString(), TextMenu::noOp);
@@ -241,6 +309,10 @@ public class SocialMedia {
 
     }
 
+    /**
+     * Starts the login and menu system for the social media network, allowing a user to log in and interact with
+     * the network. This method will not terminate until the user interactively exits the application.
+     */
     public void start() {
         int menuChoice = 0;
 
@@ -255,6 +327,11 @@ public class SocialMedia {
         }
     }
 
+    /**
+     * Allows a user to log in to the social media network with their username. If they are a current member, they
+     * will be presented with the main menu. If they are a new member, they will be prompted to create a new profile,
+     * and then logged in.
+     */
     private void login() {
         Scanner input = new Scanner(System.in);
         System.out.print("\nEnter your user name (not profile name): ");
@@ -274,34 +351,48 @@ public class SocialMedia {
         }
     }
 
+    /**
+     * Adds a new profile for a new member on login. Called by login() if the login username is not found.
+     */
     private void newProfileOnLogin() {
         Scanner input = new Scanner(System.in);
         System.out.println("\nCreating new profile...");
         System.out.print("Enter your display name (not the same as user name): ");
         String displayName = input.next();
-        System.out.print("Enter the URL for your image: ");
+        System.out.print("Enter the URL or path for your profile image: ");
         String image = input.next();
 
         Profile newProfile = new Profile(displayName, image);
         profileMgr.addProfile(activeUser, newProfile);
     }
 
+    /**
+     * Logs the current user out and allows a new user to log in, or the application to cleanly exit.
+     */
     private void logout() {
         System.out.println("\nLogging off user name " + activeUser);
         profileMgr.getProfile(activeUser).setStatus(Profile.statusTypes.OFFLINE);
         activeUser = null;
     }
 
-    private void addFriend(String username, boolean best) { profileMgr.createFriendship(activeUser, username, best); }
-
+    /**
+     * Prints the profile information and friends list for the specified username.
+     * @param username The username for which to print profile information and friends list.
+     */
     private void displayProfileInfo(String username) {
         System.out.println("\nProfile info:\n");
         profileMgr.getProfile(username).printProfileDetails();
         pause();
     }
 
+    /**
+     * Support method allows the user to choose a profile from the specified list of usernames, based on menu input.
+     * @param prompt The prompt describing the operation that will be performed on the selected profile.
+     * @param userList The list of usernames to select from.
+     * @return The username of the profile selected.
+     */
     private String displayProfileMenu(String prompt, ArrayList<String> userList) {
-        TextMenu profileMenu = new TextMenu(networkName, "Available Profiles", prompt);
+        TextMenu profileMenu = new TextMenu(NETWORK_NAME, "Available Profiles", prompt);
         Iterator<String> usernameIter = userList.iterator();
         String curUsername;
 
@@ -318,12 +409,15 @@ public class SocialMedia {
             return userList.get(choice - 1);
     }
 
+    /**
+     * Pauses console output until the enter key is pressed, allowing the user time to read output before returning
+     * to the main menu.
+     */
     private void pause() {
         Scanner input = new Scanner(System.in);
         System.out.println("\nPress <enter> to continue...");
         String newLine = input.nextLine();
     }
-
 }
 
 

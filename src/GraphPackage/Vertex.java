@@ -131,8 +131,11 @@ class Vertex<T> implements VertexInterface<T> {
     }
 
     /**
-     * Retrieves a list of all the label objects of all vertices that this vertex has an edge pointing to.
-     * @return A list of the label objects of all neighboring vertices.
+     * Retrieves a list of label objects containing the labels of any neighbors of this vertex connected
+     * by an edge greater than or equal to the specified edge weight.
+     * @param minWeight The minimum weight of the edge connection between this vertex and it's neighbors.
+     * @return A list of any vertex label objects which this vertex has an edge pointing to, where that edge's
+     * weight is greater than or equal to the weight minimum.
      */
     public ArrayList<T> getNeighborLabels(double minWeight) {
         if (!this.hasNeighbor())
@@ -155,7 +158,7 @@ class Vertex<T> implements VertexInterface<T> {
      * @param searchLabel The label object to search for.
      * @return True if this vertex has a neighbor with the specified label object, or false otherwise.
      */
-    public boolean hasNeighbor(T searchLabel) {
+    protected boolean hasNeighbor(T searchLabel) {
         if (!this.hasNeighbor())
             return false;
 
@@ -201,7 +204,7 @@ class Vertex<T> implements VertexInterface<T> {
 
     /**
      * Prints a text representation of the contents of this vertex's label object and the label objects of all
-     * of the neighbors of this vertex, along with their respective edge weights.
+     * neighbors of this vertex, along with their respective edge weights.
      */
     public void printVertex() {
         StringJoiner vertexString = new StringJoiner(", ");

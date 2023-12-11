@@ -5,13 +5,20 @@ import java.util.ArrayList;
 import java.util.Queue;
 import java.util.Stack;
 
+/**
+ * Main: Contains an entry point to start the social media network and test the DirectedGraph class.
+ */
 public class Main {
     public static void main(String[] args) {
-        SocialMedia testSM = new SocialMedia();
-        testSM.start();
         //testGraph();
+        SocialMedia testSM = new SocialMedia();
+        testSM.addExampleProfiles(); // Adds example profiles for testing.
+        testSM.start();
     }
 
+    /**
+     * Method instantiates a new DirectedGraph and tests its methods and underlying data structures.
+     */
     public static void testGraph() {
         DirectedGraph<String> testDG = new DirectedGraph<>();
 
@@ -118,6 +125,8 @@ public class Main {
         System.out.println("Removing edge from Mumbai to Lima; result: " + testDG.removeEdge("Mumbai", "Lima"));
         System.out.println("Removing edge from Seattle to Tokyo (edge does not exist); result: " +
                 testDG.removeEdge("Seattle", "Tokyo"));
+        System.out.println("Removing edge from Paris to Paris (cyclic/does not exist); result: " +
+                testDG.removeEdge("Paris", "Paris"));
         System.out.println("Removing edge from Shanghai (not in graph) to Barcelona; result: " +
                 testDG.removeEdge("Shanghai", "Barcelona"));
         System.out.println("Removing vertex Tokyo from the graph; result: " +

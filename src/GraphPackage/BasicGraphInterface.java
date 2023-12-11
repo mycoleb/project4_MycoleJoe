@@ -29,6 +29,12 @@ public interface BasicGraphInterface<T>
      @return  True if the edge is added, or false if not. */
     public boolean addEdge(T begin, T end);
 
+    /**
+     * Removes a directional edge from one vertex to another.
+     * @param begin An object that labels the origin vertex of the edge.
+     * @param end An object, distinct from begin, that labels the end vertex of the edge.
+     * @return True if the edge was removed, or false if the edge/vertex was not found.
+     */
     public boolean removeEdge(T begin, T end);
 
     /** Sees whether an edge exists between two given vertices.
